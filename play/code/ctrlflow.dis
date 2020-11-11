@@ -1,0 +1,118 @@
+
+ctrlflow.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000000000 <get_cycle_count>:
+   0:	0f 31                	rdtsc  
+   2:	48 8d 4c 24 f8       	lea    -0x8(%rsp),%rcx
+   7:	89 01                	mov    %eax,(%rcx)
+   9:	89 51 04             	mov    %edx,0x4(%rcx)
+   c:	48 8b 44 24 f8       	mov    -0x8(%rsp),%rax
+  11:	c3                   	retq   
+
+0000000000000012 <if_goto>:
+  12:	85 ff                	test   %edi,%edi
+  14:	75 03                	jne    19 <if_goto+0x7>
+  16:	89 d0                	mov    %edx,%eax
+  18:	c3                   	retq   
+  19:	89 f0                	mov    %esi,%eax
+  1b:	c3                   	retq   
+
+000000000000001c <if_nogoto>:
+  1c:	85 ff                	test   %edi,%edi
+  1e:	74 03                	je     23 <if_nogoto+0x7>
+  20:	89 f0                	mov    %esi,%eax
+  22:	c3                   	retq   
+  23:	89 d0                	mov    %edx,%eax
+  25:	c3                   	retq   
+
+0000000000000026 <do_while_loop>:
+  26:	c7 44 24 fc 5d 00 00 	movl   $0x5d,-0x4(%rsp)
+  2d:	00 
+  2e:	8b 44 24 fc          	mov    -0x4(%rsp),%eax
+  32:	83 c0 01             	add    $0x1,%eax
+  35:	89 44 24 fc          	mov    %eax,-0x4(%rsp)
+  39:	83 ef 01             	sub    $0x1,%edi
+  3c:	75 f0                	jne    2e <do_while_loop+0x8>
+  3e:	8b 44 24 fc          	mov    -0x4(%rsp),%eax
+  42:	c3                   	retq   
+
+0000000000000043 <while_loop>:
+  43:	c7 44 24 fc 5d 00 00 	movl   $0x5d,-0x4(%rsp)
+  4a:	00 
+  4b:	85 ff                	test   %edi,%edi
+  4d:	74 10                	je     5f <while_loop+0x1c>
+  4f:	8b 44 24 fc          	mov    -0x4(%rsp),%eax
+  53:	83 c0 01             	add    $0x1,%eax
+  56:	89 44 24 fc          	mov    %eax,-0x4(%rsp)
+  5a:	83 ef 01             	sub    $0x1,%edi
+  5d:	75 f0                	jne    4f <while_loop+0xc>
+  5f:	8b 44 24 fc          	mov    -0x4(%rsp),%eax
+  63:	c3                   	retq   
+
+0000000000000064 <for_loop>:
+  64:	c7 44 24 fc 5d 00 00 	movl   $0x5d,-0x4(%rsp)
+  6b:	00 
+  6c:	85 ff                	test   %edi,%edi
+  6e:	74 10                	je     80 <for_loop+0x1c>
+  70:	8b 44 24 fc          	mov    -0x4(%rsp),%eax
+  74:	83 c0 01             	add    $0x1,%eax
+  77:	89 44 24 fc          	mov    %eax,-0x4(%rsp)
+  7b:	83 ef 01             	sub    $0x1,%edi
+  7e:	75 f0                	jne    70 <for_loop+0xc>
+  80:	8b 44 24 fc          	mov    -0x4(%rsp),%eax
+  84:	c3                   	retq   
+
+0000000000000085 <switch_case>:
+  85:	48 83 ec 08          	sub    $0x8,%rsp
+  89:	83 ff 04             	cmp    $0x4,%edi
+  8c:	77 40                	ja     ce <switch_case+0x49>
+  8e:	89 ff                	mov    %edi,%edi
+  90:	ff 24 fd 00 00 00 00 	jmpq   *0x0(,%rdi,8)
+  97:	b8 15 02 00 00       	mov    $0x215,%eax
+  9c:	eb 35                	jmp    d3 <switch_case+0x4e>
+  9e:	b8 63 00 00 00       	mov    $0x63,%eax
+  a3:	eb 2e                	jmp    d3 <switch_case+0x4e>
+  a5:	be 00 00 00 00       	mov    $0x0,%esi
+  aa:	bf 00 00 00 00       	mov    $0x0,%edi
+  af:	b8 00 00 00 00       	mov    $0x0,%eax
+  b4:	e8 00 00 00 00       	callq  b9 <switch_case+0x34>
+  b9:	b8 03 00 00 00       	mov    $0x3,%eax
+  be:	eb 13                	jmp    d3 <switch_case+0x4e>
+  c0:	b8 41 01 00 00       	mov    $0x141,%eax
+  c5:	eb 0c                	jmp    d3 <switch_case+0x4e>
+  c7:	b8 fc ff ff ff       	mov    $0xfffffffc,%eax
+  cc:	eb 05                	jmp    d3 <switch_case+0x4e>
+  ce:	b8 00 00 00 00       	mov    $0x0,%eax
+  d3:	48 83 c4 08          	add    $0x8,%rsp
+  d7:	c3                   	retq   
+
+00000000000000d8 <main>:
+  d8:	48 83 ec 08          	sub    $0x8,%rsp
+  dc:	bf 05 00 00 00       	mov    $0x5,%edi
+  e1:	e8 00 00 00 00       	callq  e6 <main+0xe>
+  e6:	bf 05 00 00 00       	mov    $0x5,%edi
+  eb:	e8 00 00 00 00       	callq  f0 <main+0x18>
+  f0:	bf 05 00 00 00       	mov    $0x5,%edi
+  f5:	e8 00 00 00 00       	callq  fa <main+0x22>
+  fa:	bf 02 00 00 00       	mov    $0x2,%edi
+  ff:	e8 00 00 00 00       	callq  104 <main+0x2c>
+ 104:	48 83 c4 08          	add    $0x8,%rsp
+ 108:	c3                   	retq   
+
+0000000000000109 <timing_overhead>:
+ 109:	53                   	push   %rbx
+ 10a:	b8 00 00 00 00       	mov    $0x0,%eax
+ 10f:	e8 00 00 00 00       	callq  114 <timing_overhead+0xb>
+ 114:	48 89 c3             	mov    %rax,%rbx
+ 117:	b8 00 00 00 00       	mov    $0x0,%eax
+ 11c:	e8 00 00 00 00       	callq  121 <timing_overhead+0x18>
+ 121:	48 89 c6             	mov    %rax,%rsi
+ 124:	48 29 de             	sub    %rbx,%rsi
+ 127:	bf 00 00 00 00       	mov    $0x0,%edi
+ 12c:	b8 00 00 00 00       	mov    $0x0,%eax
+ 131:	e8 00 00 00 00       	callq  136 <timing_overhead+0x2d>
+ 136:	5b                   	pop    %rbx
+ 137:	c3                   	retq   

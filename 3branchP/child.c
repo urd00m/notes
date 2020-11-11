@@ -1,0 +1,41 @@
+#include <unistd.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <signal.h>
+
+int main() {
+	printf("(child) child running\n"); 
+	int mypid; 
+	int myparent; 
+	int childpid;
+	int childstatus; 	
+	
+	childpid = fork();
+	mypid = getpid();
+	myparent = getppid(); 
+
+	if(childpid < 0) {
+		perror("(child) Error creating grandchild\n"); 
+	} else if(childpid == 0) {
+		printf("(grandchild) This is grandchild\n"); 
+		execlp("./grandchild", "grandchild", NULL); 
+		printf("(granchild) Failed to exec\n"); 
+		return -1; 
+	} else {
+		printf("(child) Doing math\n"); 
+		int a = 1; int b = 2; 
+		int c = 3; 
+		printf("(child) 1 + 2 = %d\n", c); 
+		printf("(child) waiting on grandchild\n"); 
+		if(waitpid(childpid, &childstatus, 0) < 0) {
+			printf("(child) waiting on grandchild failed\n"); 
+			exit(-1); 
+		}
+		printf("(child) grandchild finished\n"); 
+	}
+
+	return 0; 
+}
